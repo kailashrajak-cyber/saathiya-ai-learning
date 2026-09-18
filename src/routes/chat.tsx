@@ -285,7 +285,7 @@ function ChatPage() {
                     <Mic className="size-4" aria-hidden />
                   </PromptInputButton>
                 </PromptInputTools>
-                <PromptInputSubmit status={status === "submitted" ? "submitted" : undefined} />
+                <PromptInputSubmit status={status === "submitted" ? "submitted" : "ready"} />
               </PromptInputFooter>
             </PromptInput>
             <p className="mt-2 text-[11px] text-muted-foreground">

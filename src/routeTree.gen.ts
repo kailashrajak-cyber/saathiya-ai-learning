@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ChatRouteImport } from './routes/chat'
 import { Route as CyberSafetyRouteImport } from './routes/cyber-safety'
 import { Route as DocumentsRouteImport } from './routes/documents'
 import { Route as HealthRouteImport } from './routes/health'
@@ -19,6 +20,11 @@ import { Route as WorkspaceRouteImport } from './routes/workspace'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChatRoute = ChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CyberSafetyRoute = CyberSafetyRouteImport.update({
@@ -49,6 +55,7 @@ const WorkspaceRoute = WorkspaceRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/chat': typeof ChatRoute
   '/cyber-safety': typeof CyberSafetyRoute
   '/documents': typeof DocumentsRoute
   '/health': typeof HealthRoute
@@ -57,6 +64,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/chat': typeof ChatRoute
   '/cyber-safety': typeof CyberSafetyRoute
   '/documents': typeof DocumentsRoute
   '/health': typeof HealthRoute
@@ -66,6 +74,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/chat': typeof ChatRoute
   '/cyber-safety': typeof CyberSafetyRoute
   '/documents': typeof DocumentsRoute
   '/health': typeof HealthRoute
@@ -75,13 +84,26 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/cyber-safety' | '/documents' | '/health' | '/student' | '/workspace'
+    | '/'
+    | '/chat'
+    | '/cyber-safety'
+    | '/documents'
+    | '/health'
+    | '/student'
+    | '/workspace'
   fileRoutesByTo: FileRoutesByTo
   to:
-    '/' | '/cyber-safety' | '/documents' | '/health' | '/student' | '/workspace'
+    | '/'
+    | '/chat'
+    | '/cyber-safety'
+    | '/documents'
+    | '/health'
+    | '/student'
+    | '/workspace'
   id:
     | '__root__'
     | '/'
+    | '/chat'
     | '/cyber-safety'
     | '/documents'
     | '/health'
@@ -91,6 +113,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ChatRoute: typeof ChatRoute
   CyberSafetyRoute: typeof CyberSafetyRoute
   DocumentsRoute: typeof DocumentsRoute
   HealthRoute: typeof HealthRoute
@@ -105,6 +128,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chat': {
+      id: '/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof ChatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cyber-safety': {
@@ -147,6 +177,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ChatRoute: ChatRoute,
   CyberSafetyRoute: CyberSafetyRoute,
   DocumentsRoute: DocumentsRoute,
   HealthRoute: HealthRoute,
