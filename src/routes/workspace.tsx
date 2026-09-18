@@ -60,7 +60,7 @@ function WorkspacePage() {
       const res = await runAi({
         task: "document-analysis",
         input: question,
-        context: fileName ? { file: fileName } : undefined,
+        ...(fileName ? { context: { file: fileName } } : {}),
       });
       setOutput(
         `${res.text}\n\nExplanation for “${question}”: Saathiya walks through the answer step by step, in simple language, and flags anything that needs a human expert.`,
@@ -77,7 +77,7 @@ function WorkspacePage() {
   function save() {
     if (!output) return;
     setSaved((prev) => [
-      { id: crypto.randomUUID(), question, file: fileName ?? undefined, text: output },
+      { id: crypto.randomUUID(), question, text: output, ...(fileName ? { file: fileName } : {}) },
       ...prev,
     ]);
     setStage(4);

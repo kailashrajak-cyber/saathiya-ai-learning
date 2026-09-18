@@ -10,12 +10,25 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CyberSafetyRouteImport } from './routes/cyber-safety'
+import { Route as DocumentsRouteImport } from './routes/documents'
 import { Route as HealthRouteImport } from './routes/health'
 import { Route as StudentRouteImport } from './routes/student'
+import { Route as WorkspaceRouteImport } from './routes/workspace'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CyberSafetyRoute = CyberSafetyRouteImport.update({
+  id: '/cyber-safety',
+  path: '/cyber-safety',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DocumentsRoute = DocumentsRouteImport.update({
+  id: '/documents',
+  path: '/documents',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HealthRoute = HealthRouteImport.update({
@@ -28,35 +41,61 @@ const StudentRoute = StudentRouteImport.update({
   path: '/student',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WorkspaceRoute = WorkspaceRouteImport.update({
+  id: '/workspace',
+  path: '/workspace',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/cyber-safety': typeof CyberSafetyRoute
+  '/documents': typeof DocumentsRoute
   '/health': typeof HealthRoute
   '/student': typeof StudentRoute
+  '/workspace': typeof WorkspaceRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/cyber-safety': typeof CyberSafetyRoute
+  '/documents': typeof DocumentsRoute
   '/health': typeof HealthRoute
   '/student': typeof StudentRoute
+  '/workspace': typeof WorkspaceRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/cyber-safety': typeof CyberSafetyRoute
+  '/documents': typeof DocumentsRoute
   '/health': typeof HealthRoute
   '/student': typeof StudentRoute
+  '/workspace': typeof WorkspaceRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/health' | '/student'
+  fullPaths:
+    '/' | '/cyber-safety' | '/documents' | '/health' | '/student' | '/workspace'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/health' | '/student'
-  id: '__root__' | '/' | '/health' | '/student'
+  to:
+    '/' | '/cyber-safety' | '/documents' | '/health' | '/student' | '/workspace'
+  id:
+    | '__root__'
+    | '/'
+    | '/cyber-safety'
+    | '/documents'
+    | '/health'
+    | '/student'
+    | '/workspace'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CyberSafetyRoute: typeof CyberSafetyRoute
+  DocumentsRoute: typeof DocumentsRoute
   HealthRoute: typeof HealthRoute
   StudentRoute: typeof StudentRoute
+  WorkspaceRoute: typeof WorkspaceRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -66,6 +105,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cyber-safety': {
+      id: '/cyber-safety'
+      path: '/cyber-safety'
+      fullPath: '/cyber-safety'
+      preLoaderRoute: typeof CyberSafetyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/documents': {
+      id: '/documents'
+      path: '/documents'
+      fullPath: '/documents'
+      preLoaderRoute: typeof DocumentsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/health': {
@@ -82,13 +135,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StudentRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/workspace': {
+      id: '/workspace'
+      path: '/workspace'
+      fullPath: '/workspace'
+      preLoaderRoute: typeof WorkspaceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CyberSafetyRoute: CyberSafetyRoute,
+  DocumentsRoute: DocumentsRoute,
   HealthRoute: HealthRoute,
   StudentRoute: StudentRoute,
+  WorkspaceRoute: WorkspaceRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
