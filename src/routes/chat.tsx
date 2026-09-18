@@ -157,7 +157,7 @@ function ChatPage() {
             <SaathiyaMark />
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold">Saathiya AI Chat</p>
-              <p className="truncate text-[11px] text-muted-foreground">
+              <p className="hidden truncate text-[11px] text-muted-foreground sm:block">
                 Learning · Health info · Cyber safety
               </p>
             </div>
@@ -259,8 +259,7 @@ function ChatPage() {
             ) : null}
 
             <PromptInput
-              onSubmit={(message, event) => {
-                event.currentTarget.reset();
+              onSubmit={(message) => {
                 void send(message.text, attachment ?? undefined);
               }}
             >
