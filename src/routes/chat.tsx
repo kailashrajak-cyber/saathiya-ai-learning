@@ -219,7 +219,7 @@ function ChatPage() {
                         <p className="mb-1 text-[11px] opacity-80">📎 {m.attachmentName}</p>
                       ) : null}
                       <MessageResponse>{m.content}</MessageResponse>
-                      {m.isDemo ? <DemoBadge className="mt-2" /> : null}
+                      {m.isDemo ? <DemoBadge className="mt-2 self-start" /> : null}
                     </MessageContent>
                   </Message>
                 ))
