@@ -31,7 +31,14 @@ export const Route = createFileRoute("/student")({
   component: StudentPage,
 });
 
-const TOOLS = [
+const TOOLS: {
+  task: AiRequest["task"];
+  icon: typeof BookOpenCheck;
+  title: string;
+  placeholder: string;
+  cta: string;
+  long?: boolean;
+}[] = [
   {
     task: "explain" as AiRequest["task"],
     icon: BookOpenCheck,
