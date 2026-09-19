@@ -93,7 +93,6 @@ export function AppShell({ children }: { children: ReactNode }) {
             substitute for a doctor, teacher or legal advice. Cyber-safety content is defensive and
             educational only.
           </p>
-          <p>Currently running on clearly labelled demo data — no AI service is connected yet.</p>
         </div>
       </footer>
     </div>

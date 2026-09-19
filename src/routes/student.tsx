@@ -3,7 +3,6 @@ import { useState } from "react";
 import { BookOpenCheck, CalendarRange, FileQuestion, ListChecks, NotebookPen } from "lucide-react";
 import {
   ActionButton,
-  DemoBadge,
   EmptyState,
   ErrorState,
   GlassCard,
@@ -106,9 +105,7 @@ function StudentPage() {
         eyebrow="Student AI"
         title="Study tools that explain, not just answer"
         description="Choose a tool, add your topic or notes, and Saathiya turns it into something you can actually revise from."
-      >
-        <DemoBadge />
-      </PageHeader>
+      />
 
       <div className="grid gap-4 lg:grid-cols-[280px_minmax(0,1fr)]">
         <nav aria-label="Student tools" className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
@@ -171,7 +168,6 @@ function StudentPage() {
           {error ? <ErrorState message={error} onRetry={submit} /> : null}
           {result ? (
             <div className="space-y-3 rounded-2xl border border-border bg-background/40 p-4">
-              <DemoBadge />
               <p className="whitespace-pre-line text-sm leading-relaxed">{result}</p>
             </div>
           ) : null}
