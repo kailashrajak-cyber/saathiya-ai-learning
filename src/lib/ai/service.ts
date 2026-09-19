@@ -100,3 +100,22 @@ export function setAiAdapter(next: AiAdapter) {
 export function runAi(request: AiRequest) {
   return adapter.run(request);
 }
+
+/**
+ * Real AI chat. Runs through a server function so the API key stays on the server.
+ */
+export async function runChat(options: {
+  messages: { role: "user" | "assistant"; content: string }[];
+  language: Language;
+  attachment?: { name: string; text: string | null } | null;
+}): Promise<AiResponse> {
+  const { chatWithSaathiya } = await import("./chat.functions");
+  const result = await chatWithSaathiya({
+    data: {
+      language: options.language,
+      messages: options.messages,
+      attachment: options.attachment ?? null,
+    },
+  });
+  return { text: result.text, isDemo: false };
+}
