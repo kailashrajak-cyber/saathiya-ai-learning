@@ -95,9 +95,8 @@ function Home() {
             </PrimaryLink>
           </div>
           <div className="flex flex-wrap items-center gap-3 pt-2">
-            <DemoBadge />
             <p className="text-xs text-muted-foreground">
-              Interface ready for a secure backend; responses are placeholders for now.
+              Answers come from a live AI service. Sign in to keep your saved workspace outputs.
             </p>
           </div>
         </div>

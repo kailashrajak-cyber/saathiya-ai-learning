@@ -3,7 +3,6 @@ import { useState } from "react";
 import { CheckCircle2, Fish, KeyRound, ScanSearch, ShieldCheck } from "lucide-react";
 import {
   ActionButton,
-  DemoBadge,
   EmptyState,
   ErrorState,
   GlassCard,
@@ -92,9 +91,7 @@ function CyberPage() {
         eyebrow="Cyber Safety"
         title="Defensive skills for everyday digital life"
         description="Learn how scams work so you can avoid them. Saathiya only teaches protection — it will never help create attacks, malware or intrusion tools."
-      >
-        <DemoBadge />
-      </PageHeader>
+      />
 
       <Notice title="Educational and defensive only">
         These tools explain warning signs and safe habits. If you have already lost money, contact
@@ -127,8 +124,7 @@ function CyberPage() {
         {error ? <ErrorState message={error} onRetry={explain} /> : null}
         {review ? (
           <div className="space-y-3 rounded-2xl border border-border bg-background/40 p-4">
-            <DemoBadge />
-            <p className="text-sm leading-relaxed">{review}</p>
+            <p className="whitespace-pre-line text-sm leading-relaxed">{review}</p>
           </div>
         ) : null}
         {!loading && !error && !review ? (

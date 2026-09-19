@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Activity, Apple, Baby, Brain, Droplets, Moon, ShieldAlert } from "lucide-react";
 import {
   ActionButton,
-  DemoBadge,
   EmptyState,
   ErrorState,
   GlassCard,
@@ -68,9 +67,7 @@ function HealthPage() {
         eyebrow="Health Information"
         title="Understand health topics in plain language"
         description="Saathiya explains general health concepts for learning purposes. It does not diagnose conditions, prescribe treatment, or replace a qualified healthcare professional."
-      >
-        <DemoBadge />
-      </PageHeader>
+      />
 
       <Notice tone="warning" title="Important safety notice">
         For chest pain, breathing difficulty, heavy bleeding, fainting, suicidal thoughts, or any
@@ -99,8 +96,7 @@ function HealthPage() {
         {error ? <ErrorState message={error} onRetry={() => ask(topic)} /> : null}
         {answer ? (
           <div className="space-y-3 rounded-2xl border border-border bg-background/40 p-4">
-            <DemoBadge />
-            <p className="text-sm leading-relaxed">{answer}</p>
+            <p className="whitespace-pre-line text-sm leading-relaxed">{answer}</p>
             <p className="text-xs text-muted-foreground">
               Educational information only — please confirm with a qualified doctor.
             </p>
