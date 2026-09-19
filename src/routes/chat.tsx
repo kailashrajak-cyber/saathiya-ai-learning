@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useCallback, useState } from "react";
-import { History, Languages, Mic, Plus, Paperclip } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { History, Languages, Mic, Plus, Paperclip, X } from "lucide-react";
 import {
   Conversation,
   ConversationContent,
@@ -19,7 +19,8 @@ import {
 import { Shimmer } from "@/components/ai-elements/shimmer";
 import { SaathiyaMark } from "@/components/saathiya/AppShell";
 import { DemoBadge, ErrorState, GhostButton, GlassCard } from "@/components/saathiya/ui";
-import { runAi, type ChatMessage, type Language } from "@/lib/ai/service";
+import { useSpeechInput } from "@/hooks/useSpeechInput";
+import { runChat, type ChatMessage, type Language } from "@/lib/ai/service";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/chat")({
@@ -68,6 +69,13 @@ const DEMO_HISTORY: Thread[] = [
   { id: "demo-3", title: "Demo · Sleep routine basics", messages: [] },
 ];
 
+const TEXT_TYPES = /\.(txt|md|csv|json|log)$/i;
+
+interface Attachment {
+  name: string;
+  text: string | null;
+}
+
 function ChatPage() {
   const [language, setLanguage] = useState<Language>("en");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -75,15 +83,31 @@ function ChatPage() {
   const [error, setError] = useState<string | null>(null);
   const [lastPrompt, setLastPrompt] = useState("");
   const [showHistory, setShowHistory] = useState(false);
-  const [listening, setListening] = useState(false);
-  const [attachment, setAttachment] = useState<string | null>(null);
+  const [attachment, setAttachment] = useState<Attachment | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const formRef = useRef<HTMLDivElement>(null);
+  const speech = useSpeechInput(language);
+
+  // Put the recognised speech into the message box as it is heard.
+  useEffect(() => {
+    if (!speech.transcript) return;
+    const textarea = formRef.current?.querySelector("textarea");
+    if (!textarea) return;
+    const setter = Object.getOwnPropertyDescriptor(
+      HTMLTextAreaElement.prototype,
+      "value",
+    )?.set;
+    setter?.call(textarea, speech.transcript);
+    textarea.dispatchEvent(new Event("input", { bubbles: true }));
+  }, [speech.transcript]);
 
   const send = useCallback(
-    async (text: string, attachmentName?: string) => {
+    async (text: string, file?: Attachment | null) => {
       const trimmed = text.trim();
       if (!trimmed || status === "submitted") return;
       setLastPrompt(trimmed);
       setError(null);
+      const history = [...messages, { role: "user" as const, content: trimmed }];
       setMessages((prev) => [
         ...prev,
         {
@@ -91,19 +115,23 @@ function ChatPage() {
           role: "user",
           content: trimmed,
           createdAt: Date.now(),
-          ...(attachmentName ? { attachmentName } : {}),
+          ...(file ? { attachmentName: file.name } : {}),
         },
       ]);
       setAttachment(null);
       setStatus("submitted");
       try {
-        const res = await runAi({ task: "chat", input: trimmed, language });
+        const res = await runChat({
+          language,
+          messages: history.map((m) => ({ role: m.role, content: m.content })),
+          attachment: file ?? null,
+        });
         setMessages((prev) => [
           ...prev,
           {
             id: crypto.randomUUID(),
             role: "assistant",
-            content: res.text,
+            content: res.text || "I could not put that into words. Please ask me again.",
             createdAt: Date.now(),
             isDemo: res.isDemo,
           },
@@ -114,8 +142,22 @@ function ChatPage() {
         setStatus("error");
       }
     },
-    [language, status],
+    [language, messages, status],
   );
+
+  async function pickFile(fileList: FileList | null) {
+    const file = fileList?.[0];
+    if (!file) return;
+    let text: string | null = null;
+    if (TEXT_TYPES.test(file.name) || file.type.startsWith("text/")) {
+      try {
+        text = (await file.text()).slice(0, 18000);
+      } catch {
+        text = null;
+      }
+    }
+    setAttachment({ name: file.name, text });
+  }
 
   function newConversation() {
     setMessages([]);
@@ -232,7 +274,7 @@ function ChatPage() {
             <ConversationScrollButton />
           </Conversation>
 
-          <div className="border-t border-border p-3">
+          <div className="border-t border-border p-3" ref={formRef}>
             {messages.length === 0 ? (
               <div className="mb-3 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {SUGGESTIONS[language].map((s) => (
@@ -248,19 +290,47 @@ function ChatPage() {
               </div>
             ) : null}
 
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".txt,.md,.csv,.json,.log,.pdf,.doc,.docx"
+              className="hidden"
+              onChange={(e) => {
+                void pickFile(e.target.files);
+                e.target.value = "";
+              }}
+            />
+
             {attachment ? (
-              <p className="mb-2 text-xs text-accent">📎 {attachment} will be sent with your message</p>
+              <p className="mb-2 flex items-center gap-2 text-xs text-accent">
+                📎 {attachment.name}
+                {attachment.text
+                  ? " — its text will be sent with your message"
+                  : " — text could not be read here, so mention what to look for"}
+                <button
+                  type="button"
+                  onClick={() => setAttachment(null)}
+                  aria-label="Remove attachment"
+                  className="rounded-full p-1 hover:bg-secondary"
+                >
+                  <X className="size-3" aria-hidden />
+                </button>
+              </p>
             ) : null}
-            {listening ? (
+            {speech.listening ? (
               <p className="mb-2 flex items-center gap-2 text-xs text-primary">
                 <span className="size-2 animate-pulse rounded-full bg-primary" aria-hidden />
-                Voice input is a demo preview — speech capture is not connected yet.
+                Listening{language === "hi" ? " (हिंदी)" : " (English)"} — speak now.
               </p>
+            ) : null}
+            {speech.error ? (
+              <p className="mb-2 text-xs text-destructive">{speech.error}</p>
             ) : null}
 
             <PromptInput
               onSubmit={(message) => {
-                void send(message.text, attachment ?? undefined);
+                speech.stop();
+                void send(message.text, attachment);
               }}
             >
               <PromptInputTextarea
@@ -271,15 +341,15 @@ function ChatPage() {
               <PromptInputFooter>
                 <PromptInputTools>
                   <PromptInputButton
-                    onClick={() => setAttachment("demo-notes.pdf")}
+                    onClick={() => fileInputRef.current?.click()}
                     aria-label="Attach a file"
                   >
                     <Paperclip className="size-4" aria-hidden />
                   </PromptInputButton>
                   <PromptInputButton
-                    onClick={() => setListening((v) => !v)}
-                    aria-label="Voice input"
-                    className={listening ? "text-primary" : undefined}
+                    onClick={() => (speech.listening ? speech.stop() : speech.start())}
+                    aria-label={speech.listening ? "Stop voice input" : "Start voice input"}
+                    className={speech.listening ? "text-primary" : undefined}
                   >
                     <Mic className="size-4" aria-hidden />
                   </PromptInputButton>
