@@ -6,10 +6,13 @@ import {
   HeartPulse,
   Home,
   LayoutPanelTop,
+  LogIn,
   MessagesSquare,
   ShieldCheck,
+  User,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/useAuth";
 
 const NAV = [
   { to: "/", label: "Home", icon: Home },
