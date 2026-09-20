@@ -14,3 +14,15 @@ export async function readFileText(file: File): Promise<string | null> {
     return null;
   }
 }
+
+/** Reads a file as base64 (used to send PDFs to the server for analysis). */
+export async function readFileBase64(file: File): Promise<string> {
+  const buffer = await file.arrayBuffer();
+  const bytes = new Uint8Array(buffer);
+  let binary = "";
+  const chunk = 8192;
+  for (let i = 0; i < bytes.length; i += chunk) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
+  }
+  return btoa(binary);
+}
