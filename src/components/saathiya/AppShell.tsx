@@ -6,10 +6,13 @@ import {
   HeartPulse,
   Home,
   LayoutPanelTop,
+  LogIn,
   MessagesSquare,
   ShieldCheck,
+  User,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/useAuth";
 
 const NAV = [
   { to: "/", label: "Home", icon: Home },
@@ -35,6 +38,20 @@ export function SaathiyaMark({ className }: { className?: string }) {
   );
 }
 
+function HeaderAuthButton() {
+  const { user } = useAuth();
+  return (
+    <Link
+      to={user ? "/workspace" : "/auth"}
+      className="inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-xl border border-border bg-background/60 px-3 text-xs font-semibold text-foreground transition-colors hover:bg-secondary"
+      aria-label={user ? "Account" : "Sign in"}
+    >
+      {user ? <User className="size-4" aria-hidden /> : <LogIn className="size-4" aria-hidden />}
+      <span className="hidden sm:inline">{user ? "Account" : "Sign In"}</span>
+    </Link>
+  );
+}
+
 export function AppShell({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col">
@@ -52,12 +69,15 @@ export function AppShell({ children }: { children: ReactNode }) {
                 </span>
               </span>
             </Link>
-            <Link
-              to="/chat"
-              className="inline-flex min-h-10 shrink-0 items-center rounded-xl bg-primary px-3.5 text-xs font-semibold text-primary-foreground sm:text-sm"
-            >
-              Start Chatting
-            </Link>
+            <div className="flex items-center gap-2">
+              <HeaderAuthButton />
+              <Link
+                to="/chat"
+                className="inline-flex min-h-10 shrink-0 items-center rounded-xl bg-primary px-3.5 text-xs font-semibold text-primary-foreground sm:text-sm"
+              >
+                Start Chatting
+              </Link>
+            </div>
           </div>
 
           <nav
