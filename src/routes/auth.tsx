@@ -45,7 +45,7 @@ function AuthPage() {
   const [info, setInfo] = useState<string | null>(null);
 
   useEffect(() => {
-    if (user) void navigate({ to: "/workspace" });
+    if (user) void navigate({ to: "/account" });
   }, [user, navigate]);
 
   async function submit() {
