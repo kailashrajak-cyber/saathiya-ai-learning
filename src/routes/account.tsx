@@ -112,7 +112,11 @@ function AccountPage() {
   if (!user) {
     return (
       <div className="mx-auto max-w-lg space-y-6">
-        <PageHeader eyebrow="Account" title="You're not signed in" />
+        <PageHeader
+          eyebrow="Account"
+          title="You're not signed in"
+          description="Sign in to view your saved outputs and account settings."
+        />
         <EmptyState
           icon={<User className="size-6" aria-hidden />}
           title="Sign in to see your account"
