@@ -42,7 +42,7 @@ function HeaderAuthButton() {
   const { user } = useAuth();
   return (
     <Link
-      to={user ? "/workspace" : "/auth"}
+      to={user ? "/account" : "/auth"}
       className="inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-xl border border-border bg-background/60 px-3 text-xs font-semibold text-foreground transition-colors hover:bg-secondary"
       aria-label={user ? "Account" : "Sign in"}
     >
