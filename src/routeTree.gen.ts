@@ -16,8 +16,13 @@ import { Route as ChatRouteImport } from './routes/chat'
 import { Route as CyberSafetyRouteImport } from './routes/cyber-safety'
 import { Route as DocumentsRouteImport } from './routes/documents'
 import { Route as HealthRouteImport } from './routes/health'
+import { Route as LearnRouteImport } from './routes/learn'
+import { Route as ProgressRouteImport } from './routes/progress'
+import { Route as RoadmapRouteImport } from './routes/roadmap'
 import { Route as StudentRouteImport } from './routes/student'
 import { Route as WorkspaceRouteImport } from './routes/workspace'
+import { Route as LearnIndexRouteImport } from './routes/learn.index'
+import { Route as LearnModuleIdRouteImport } from './routes/learn.$moduleId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -54,6 +59,21 @@ const HealthRoute = HealthRouteImport.update({
   path: '/health',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LearnRoute = LearnRouteImport.update({
+  id: '/learn',
+  path: '/learn',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProgressRoute = ProgressRouteImport.update({
+  id: '/progress',
+  path: '/progress',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RoadmapRoute = RoadmapRouteImport.update({
+  id: '/roadmap',
+  path: '/roadmap',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const StudentRoute = StudentRouteImport.update({
   id: '/student',
   path: '/student',
@@ -64,6 +84,16 @@ const WorkspaceRoute = WorkspaceRouteImport.update({
   path: '/workspace',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LearnIndexRoute = LearnIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => LearnRoute,
+} as any)
+const LearnModuleIdRoute = LearnModuleIdRouteImport.update({
+  id: '/$moduleId',
+  path: '/$moduleId',
+  getParentRoute: () => LearnRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -73,8 +103,13 @@ export interface FileRoutesByFullPath {
   '/cyber-safety': typeof CyberSafetyRoute
   '/documents': typeof DocumentsRoute
   '/health': typeof HealthRoute
+  '/learn': typeof LearnRouteWithChildren
+  '/progress': typeof ProgressRoute
+  '/roadmap': typeof RoadmapRoute
   '/student': typeof StudentRoute
   '/workspace': typeof WorkspaceRoute
+  '/learn/$moduleId': typeof LearnModuleIdRoute
+  '/learn/': typeof LearnIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -84,8 +119,12 @@ export interface FileRoutesByTo {
   '/cyber-safety': typeof CyberSafetyRoute
   '/documents': typeof DocumentsRoute
   '/health': typeof HealthRoute
+  '/progress': typeof ProgressRoute
+  '/roadmap': typeof RoadmapRoute
   '/student': typeof StudentRoute
   '/workspace': typeof WorkspaceRoute
+  '/learn/$moduleId': typeof LearnModuleIdRoute
+  '/learn': typeof LearnIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -96,8 +135,13 @@ export interface FileRoutesById {
   '/cyber-safety': typeof CyberSafetyRoute
   '/documents': typeof DocumentsRoute
   '/health': typeof HealthRoute
+  '/learn': typeof LearnRouteWithChildren
+  '/progress': typeof ProgressRoute
+  '/roadmap': typeof RoadmapRoute
   '/student': typeof StudentRoute
   '/workspace': typeof WorkspaceRoute
+  '/learn/$moduleId': typeof LearnModuleIdRoute
+  '/learn/': typeof LearnIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -109,8 +153,13 @@ export interface FileRouteTypes {
     | '/cyber-safety'
     | '/documents'
     | '/health'
+    | '/learn'
+    | '/progress'
+    | '/roadmap'
     | '/student'
     | '/workspace'
+    | '/learn/$moduleId'
+    | '/learn/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -120,8 +169,12 @@ export interface FileRouteTypes {
     | '/cyber-safety'
     | '/documents'
     | '/health'
+    | '/progress'
+    | '/roadmap'
     | '/student'
     | '/workspace'
+    | '/learn/$moduleId'
+    | '/learn'
   id:
     | '__root__'
     | '/'
@@ -131,8 +184,13 @@ export interface FileRouteTypes {
     | '/cyber-safety'
     | '/documents'
     | '/health'
+    | '/learn'
+    | '/progress'
+    | '/roadmap'
     | '/student'
     | '/workspace'
+    | '/learn/$moduleId'
+    | '/learn/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -143,6 +201,9 @@ export interface RootRouteChildren {
   CyberSafetyRoute: typeof CyberSafetyRoute
   DocumentsRoute: typeof DocumentsRoute
   HealthRoute: typeof HealthRoute
+  LearnRoute: typeof LearnRouteWithChildren
+  ProgressRoute: typeof ProgressRoute
+  RoadmapRoute: typeof RoadmapRoute
   StudentRoute: typeof StudentRoute
   WorkspaceRoute: typeof WorkspaceRoute
 }
@@ -198,6 +259,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HealthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/learn': {
+      id: '/learn'
+      path: '/learn'
+      fullPath: '/learn'
+      preLoaderRoute: typeof LearnRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/progress': {
+      id: '/progress'
+      path: '/progress'
+      fullPath: '/progress'
+      preLoaderRoute: typeof ProgressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/roadmap': {
+      id: '/roadmap'
+      path: '/roadmap'
+      fullPath: '/roadmap'
+      preLoaderRoute: typeof RoadmapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/student': {
       id: '/student'
       path: '/student'
@@ -212,8 +294,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkspaceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/learn/': {
+      id: '/learn/'
+      path: '/'
+      fullPath: '/learn/'
+      preLoaderRoute: typeof LearnIndexRouteImport
+      parentRoute: typeof LearnRoute
+    }
+    '/learn/$moduleId': {
+      id: '/learn/$moduleId'
+      path: '/$moduleId'
+      fullPath: '/learn/$moduleId'
+      preLoaderRoute: typeof LearnModuleIdRouteImport
+      parentRoute: typeof LearnRoute
+    }
   }
 }
+
+interface LearnRouteChildren {
+  LearnModuleIdRoute: typeof LearnModuleIdRoute
+  LearnIndexRoute: typeof LearnIndexRoute
+}
+
+const LearnRouteChildren: LearnRouteChildren = {
+  LearnModuleIdRoute: LearnModuleIdRoute,
+  LearnIndexRoute: LearnIndexRoute,
+}
+
+const LearnRouteWithChildren = LearnRoute._addFileChildren(LearnRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -223,6 +331,9 @@ const rootRouteChildren: RootRouteChildren = {
   CyberSafetyRoute: CyberSafetyRoute,
   DocumentsRoute: DocumentsRoute,
   HealthRoute: HealthRoute,
+  LearnRoute: LearnRouteWithChildren,
+  ProgressRoute: ProgressRoute,
+  RoadmapRoute: RoadmapRoute,
   StudentRoute: StudentRoute,
   WorkspaceRoute: WorkspaceRoute,
 }
