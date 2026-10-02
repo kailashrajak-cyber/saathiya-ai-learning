@@ -67,7 +67,7 @@ function ProgressPage() {
               <div className="h-full bg-primary" style={{ width: `${p.percent}%` }} />
             </div>
             <p className="text-xs text-muted-foreground">
-              Current stage: <span className="font-semibold text-foreground">{ROADMAP[p.stageIndex].title}</span>
+              Current stage: <span className="font-semibold text-foreground">{ROADMAP[p.stageIndex]?.title}</span>
             </p>
             {p.next ? (
               <Link to="/learn/$moduleId" params={{ moduleId: p.next.id }} className="inline-flex min-h-11 items-center rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground">

@@ -64,7 +64,7 @@ function RoadmapPage() {
                     </Link>
                   </div>
                 ) : s.id === "beginner" && !done ? (
-                  <Link to="/learn/$moduleId" params={{ moduleId: MODULES[0].id }} className="mt-3 inline-flex min-h-10 items-center rounded-xl bg-primary px-4 text-xs font-semibold text-primary-foreground">
+                  <Link to="/learn/$moduleId" params={{ moduleId: MODULES[0]!.id }} className="mt-3 inline-flex min-h-10 items-center rounded-xl bg-primary px-4 text-xs font-semibold text-primary-foreground">
                     Begin with lesson 1
                   </Link>
                 ) : null}
