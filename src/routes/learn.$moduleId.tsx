@@ -42,7 +42,7 @@ function LessonNotFound() {
 
 function LessonPage() {
   const { index } = Route.useLoaderData();
-  const m = MODULES[index];
+  const m = MODULES[index]!;
   const nextM = MODULES[index + 1];
   const prevM = MODULES[index - 1];
   const p = useLearningProgress();

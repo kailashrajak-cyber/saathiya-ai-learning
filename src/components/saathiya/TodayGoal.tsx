@@ -40,8 +40,7 @@ export function TodayGoal() {
       </ul>
       <p className="text-sm text-muted-foreground">{message}</p>
       <Link
-        to={next ? "/learn/$moduleId" : "/learn"}
-        params={next ? { moduleId: next.id } : undefined}
+        to={next ? "/learn/$moduleId" : "/learn"} params={(next ? { moduleId: next.id } : {}) as { moduleId: string }}
         className="inline-flex min-h-11 items-center rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground"
       >
         {p.hasActivity ? "Continue learning" : "Start lesson 1"}

@@ -8,7 +8,8 @@ import {
   ShieldCheck,
   Sparkle,
 } from "lucide-react";
-import { DemoBadge, GlassCard, PrimaryLink } from "@/components/saathiya/ui";
+import { GlassCard, PrimaryLink } from "@/components/saathiya/ui";
+import { TodayGoal } from "@/components/saathiya/TodayGoal";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -89,18 +90,28 @@ function Home() {
             AI that helps you learn, understand and stay safer.
           </p>
           <div className="flex flex-col gap-3 sm:flex-row">
-            <PrimaryLink to="/chat">Start Chatting</PrimaryLink>
-            <PrimaryLink to="/workspace" variant="outline">
-              Explore AI Workspace
+            <PrimaryLink to="/learn">Start Learning AI</PrimaryLink>
+            <PrimaryLink to="/chat" variant="outline">
+              Ask the AI Assistant
             </PrimaryLink>
-          </div>
-          <div className="flex flex-wrap items-center gap-3 pt-2">
-            <p className="text-xs text-muted-foreground">
-              Answers come from a live AI service. Sign in to keep your saved workspace outputs.
-            </p>
           </div>
         </div>
       </section>
+
+      <section aria-label="Today's learning goal" className="grid gap-4 lg:grid-cols-2">
+        <TodayGoal />
+        <GlassCard className="space-y-3">
+          <h2 className="text-lg font-semibold">AI Fundamentals — Beginner to Practical</h2>
+          <p className="text-sm text-muted-foreground">
+            10 structured modules with lessons, real-world examples, key terms and quizzes.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <PrimaryLink to="/learn">View course</PrimaryLink>
+            <PrimaryLink to="/roadmap" variant="outline">See roadmap</PrimaryLink>
+          </div>
+        </GlassCard>
+      </section>
+
 
       <section aria-labelledby="features" className="space-y-5">
         <div className="space-y-2">
