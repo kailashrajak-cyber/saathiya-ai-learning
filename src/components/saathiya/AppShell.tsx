@@ -1,7 +1,10 @@
 import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import {
+  BarChart3,
   BookOpenCheck,
+  GraduationCap,
+  Route,
   FileText,
   HeartPulse,
   Home,
@@ -16,7 +19,10 @@ import { useAuth } from "@/hooks/useAuth";
 
 const NAV = [
   { to: "/", label: "Home", icon: Home },
-  { to: "/chat", label: "AI Chat", icon: MessagesSquare },
+  { to: "/learn", label: "Learn", icon: GraduationCap },
+  { to: "/roadmap", label: "Roadmap", icon: Route },
+  { to: "/progress", label: "My Progress", icon: BarChart3 },
+  { to: "/chat", label: "AI Assistant", icon: MessagesSquare },
   { to: "/student", label: "Student AI", icon: BookOpenCheck },
   { to: "/workspace", label: "Workspace", icon: LayoutPanelTop },
   { to: "/health", label: "Health Info", icon: HeartPulse },
