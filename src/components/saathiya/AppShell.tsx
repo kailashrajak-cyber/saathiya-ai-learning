@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import {
   BarChart3,
   BookOpenCheck,
+  Dumbbell,
   GraduationCap,
   Route,
   FileText,
@@ -20,6 +21,7 @@ import { useAuth } from "@/hooks/useAuth";
 const NAV = [
   { to: "/", label: "Home", icon: Home },
   { to: "/learn", label: "Learn", icon: GraduationCap },
+  { to: "/practice", label: "Practice", icon: Dumbbell },
   { to: "/roadmap", label: "Roadmap", icon: Route },
   { to: "/progress", label: "My Progress", icon: BarChart3 },
   { to: "/chat", label: "AI Assistant", icon: MessagesSquare },

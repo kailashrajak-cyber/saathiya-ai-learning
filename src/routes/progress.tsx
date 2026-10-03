@@ -4,6 +4,8 @@ import { EmptyState, GlassCard, GhostButton, PageHeader } from "@/components/saa
 import { TodayGoal } from "@/components/saathiya/TodayGoal";
 import { MODULES, ROADMAP } from "@/lib/learn/course";
 import { useLearningProgress } from "@/hooks/useLearningProgress";
+import { usePracticeProgress } from "@/hooks/usePracticeProgress";
+import { CATEGORIES } from "@/lib/practice/content";
 
 export const Route = createFileRoute("/progress")({
   head: () => ({
@@ -21,6 +23,7 @@ export const Route = createFileRoute("/progress")({
 
 function ProgressPage() {
   const p = useLearningProgress();
+  const pr = usePracticeProgress();
   const header = (
     <PageHeader
       eyebrow="My progress"
@@ -50,6 +53,7 @@ function ProgressPage() {
     { label: "Lessons completed", value: `${p.lessonsDone} / ${MODULES.length}` },
     { label: "Quizzes completed", value: `${p.quizzesDone} / ${MODULES.length}` },
     { label: "Projects completed", value: `${p.projectDone} / 1` },
+    { label: "Practice completed", value: `${pr.count} / ${CATEGORIES.length}` },
     { label: "Learning streak", value: `${p.streak} day${p.streak === 1 ? "" : "s"}` },
   ];
 
