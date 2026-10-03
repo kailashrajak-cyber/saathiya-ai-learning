@@ -19,6 +19,7 @@ import { Route as HealthRouteImport } from './routes/health'
 import { Route as LearnRouteImport } from './routes/learn'
 import { Route as PracticeRouteImport } from './routes/practice'
 import { Route as ProgressRouteImport } from './routes/progress'
+import { Route as ProjectLabRouteImport } from './routes/project-lab'
 import { Route as RoadmapRouteImport } from './routes/roadmap'
 import { Route as StudentRouteImport } from './routes/student'
 import { Route as WorkspaceRouteImport } from './routes/workspace'
@@ -75,6 +76,11 @@ const ProgressRoute = ProgressRouteImport.update({
   path: '/progress',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProjectLabRoute = ProjectLabRouteImport.update({
+  id: '/project-lab',
+  path: '/project-lab',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RoadmapRoute = RoadmapRouteImport.update({
   id: '/roadmap',
   path: '/roadmap',
@@ -112,6 +118,7 @@ export interface FileRoutesByFullPath {
   '/learn': typeof LearnRouteWithChildren
   '/practice': typeof PracticeRoute
   '/progress': typeof ProgressRoute
+  '/project-lab': typeof ProjectLabRoute
   '/roadmap': typeof RoadmapRoute
   '/student': typeof StudentRoute
   '/workspace': typeof WorkspaceRoute
@@ -128,6 +135,7 @@ export interface FileRoutesByTo {
   '/health': typeof HealthRoute
   '/practice': typeof PracticeRoute
   '/progress': typeof ProgressRoute
+  '/project-lab': typeof ProjectLabRoute
   '/roadmap': typeof RoadmapRoute
   '/student': typeof StudentRoute
   '/workspace': typeof WorkspaceRoute
@@ -146,6 +154,7 @@ export interface FileRoutesById {
   '/learn': typeof LearnRouteWithChildren
   '/practice': typeof PracticeRoute
   '/progress': typeof ProgressRoute
+  '/project-lab': typeof ProjectLabRoute
   '/roadmap': typeof RoadmapRoute
   '/student': typeof StudentRoute
   '/workspace': typeof WorkspaceRoute
@@ -165,6 +174,7 @@ export interface FileRouteTypes {
     | '/learn'
     | '/practice'
     | '/progress'
+    | '/project-lab'
     | '/roadmap'
     | '/student'
     | '/workspace'
@@ -181,6 +191,7 @@ export interface FileRouteTypes {
     | '/health'
     | '/practice'
     | '/progress'
+    | '/project-lab'
     | '/roadmap'
     | '/student'
     | '/workspace'
@@ -198,6 +209,7 @@ export interface FileRouteTypes {
     | '/learn'
     | '/practice'
     | '/progress'
+    | '/project-lab'
     | '/roadmap'
     | '/student'
     | '/workspace'
@@ -216,6 +228,7 @@ export interface RootRouteChildren {
   LearnRoute: typeof LearnRouteWithChildren
   PracticeRoute: typeof PracticeRoute
   ProgressRoute: typeof ProgressRoute
+  ProjectLabRoute: typeof ProjectLabRoute
   RoadmapRoute: typeof RoadmapRoute
   StudentRoute: typeof StudentRoute
   WorkspaceRoute: typeof WorkspaceRoute
@@ -293,6 +306,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProgressRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/project-lab': {
+      id: '/project-lab'
+      path: '/project-lab'
+      fullPath: '/project-lab'
+      preLoaderRoute: typeof ProjectLabRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/roadmap': {
       id: '/roadmap'
       path: '/roadmap'
@@ -354,6 +374,7 @@ const rootRouteChildren: RootRouteChildren = {
   LearnRoute: LearnRouteWithChildren,
   PracticeRoute: PracticeRoute,
   ProgressRoute: ProgressRoute,
+  ProjectLabRoute: ProjectLabRoute,
   RoadmapRoute: RoadmapRoute,
   StudentRoute: StudentRoute,
   WorkspaceRoute: WorkspaceRoute,
