@@ -17,6 +17,7 @@ import { Route as CyberSafetyRouteImport } from './routes/cyber-safety'
 import { Route as DocumentsRouteImport } from './routes/documents'
 import { Route as HealthRouteImport } from './routes/health'
 import { Route as LearnRouteImport } from './routes/learn'
+import { Route as PracticeRouteImport } from './routes/practice'
 import { Route as ProgressRouteImport } from './routes/progress'
 import { Route as RoadmapRouteImport } from './routes/roadmap'
 import { Route as StudentRouteImport } from './routes/student'
@@ -64,6 +65,11 @@ const LearnRoute = LearnRouteImport.update({
   path: '/learn',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PracticeRoute = PracticeRouteImport.update({
+  id: '/practice',
+  path: '/practice',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProgressRoute = ProgressRouteImport.update({
   id: '/progress',
   path: '/progress',
@@ -104,6 +110,7 @@ export interface FileRoutesByFullPath {
   '/documents': typeof DocumentsRoute
   '/health': typeof HealthRoute
   '/learn': typeof LearnRouteWithChildren
+  '/practice': typeof PracticeRoute
   '/progress': typeof ProgressRoute
   '/roadmap': typeof RoadmapRoute
   '/student': typeof StudentRoute
@@ -119,6 +126,7 @@ export interface FileRoutesByTo {
   '/cyber-safety': typeof CyberSafetyRoute
   '/documents': typeof DocumentsRoute
   '/health': typeof HealthRoute
+  '/practice': typeof PracticeRoute
   '/progress': typeof ProgressRoute
   '/roadmap': typeof RoadmapRoute
   '/student': typeof StudentRoute
@@ -136,6 +144,7 @@ export interface FileRoutesById {
   '/documents': typeof DocumentsRoute
   '/health': typeof HealthRoute
   '/learn': typeof LearnRouteWithChildren
+  '/practice': typeof PracticeRoute
   '/progress': typeof ProgressRoute
   '/roadmap': typeof RoadmapRoute
   '/student': typeof StudentRoute
@@ -154,6 +163,7 @@ export interface FileRouteTypes {
     | '/documents'
     | '/health'
     | '/learn'
+    | '/practice'
     | '/progress'
     | '/roadmap'
     | '/student'
@@ -169,6 +179,7 @@ export interface FileRouteTypes {
     | '/cyber-safety'
     | '/documents'
     | '/health'
+    | '/practice'
     | '/progress'
     | '/roadmap'
     | '/student'
@@ -185,6 +196,7 @@ export interface FileRouteTypes {
     | '/documents'
     | '/health'
     | '/learn'
+    | '/practice'
     | '/progress'
     | '/roadmap'
     | '/student'
@@ -202,6 +214,7 @@ export interface RootRouteChildren {
   DocumentsRoute: typeof DocumentsRoute
   HealthRoute: typeof HealthRoute
   LearnRoute: typeof LearnRouteWithChildren
+  PracticeRoute: typeof PracticeRoute
   ProgressRoute: typeof ProgressRoute
   RoadmapRoute: typeof RoadmapRoute
   StudentRoute: typeof StudentRoute
@@ -264,6 +277,13 @@ declare module '@tanstack/react-router' {
       path: '/learn'
       fullPath: '/learn'
       preLoaderRoute: typeof LearnRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/practice': {
+      id: '/practice'
+      path: '/practice'
+      fullPath: '/practice'
+      preLoaderRoute: typeof PracticeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/progress': {
@@ -332,6 +352,7 @@ const rootRouteChildren: RootRouteChildren = {
   DocumentsRoute: DocumentsRoute,
   HealthRoute: HealthRoute,
   LearnRoute: LearnRouteWithChildren,
+  PracticeRoute: PracticeRoute,
   ProgressRoute: ProgressRoute,
   RoadmapRoute: RoadmapRoute,
   StudentRoute: StudentRoute,
