@@ -53,6 +53,15 @@ export function useLearningProgress() {
   const completeLesson = (id: string) => update(id, { lessonAt: new Date().toISOString() });
   const saveQuiz = (id: string, score: number, total: number) =>
     update(id, { quizScore: score, quizTotal: total, quizAt: new Date().toISOString() });
+  const completeProject = () => update("beginner-project", { lessonAt: new Date().toISOString() });
+  const resetProject = useCallback(() => {
+    const cur = read();
+    const modules = { ...cur.modules };
+    delete modules["beginner-project"];
+    const next = { days: cur.days, modules };
+    localStorage.setItem(KEY, JSON.stringify(next));
+    setState(next);
+  }, []);
   const reset = () => {
     localStorage.removeItem(KEY);
     setState(EMPTY);
@@ -84,6 +93,8 @@ export function useLearningProgress() {
     courseComplete,
     completeLesson,
     saveQuiz,
+    completeProject,
+    resetProject,
     reset,
   };
 }
