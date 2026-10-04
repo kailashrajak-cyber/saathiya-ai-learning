@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { CheckCircle2, Circle, FlaskConical, Lightbulb } from "lucide-react";
 import {
   ActionButton,
+  GhostButton,
   GlassCard,
   Notice,
   PageHeader,
@@ -197,15 +198,13 @@ function ProjectLabPage() {
           <p className="flex items-center gap-2 text-sm font-semibold text-primary">
             <CheckCircle2 className="size-5" aria-hidden /> Project completed — see it in My Progress.
           </p>
-          <ActionButton
-            variant="outline"
-            className="bg-transparent"
+          <GhostButton
             onClick={() =>
               confirm("Mark this project as not completed?") && p.resetProject()
             }
           >
             Mark as not completed
-          </ActionButton>
+          </GhostButton>
         </GlassCard>
       ) : (
         <div className="space-y-3">
