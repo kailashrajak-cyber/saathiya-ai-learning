@@ -25,6 +25,9 @@ import { Route as StudentRouteImport } from './routes/student'
 import { Route as WorkspaceRouteImport } from './routes/workspace'
 import { Route as LearnIndexRouteImport } from './routes/learn.index'
 import { Route as LearnModuleIdRouteImport } from './routes/learn.$moduleId'
+import { Route as LearnPythonRouteImport } from './routes/learn.python'
+import { Route as LearnPythonIndexRouteImport } from './routes/learn.python.index'
+import { Route as LearnPythonModuleIdRouteImport } from './routes/learn.python.$moduleId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -106,6 +109,21 @@ const LearnModuleIdRoute = LearnModuleIdRouteImport.update({
   path: '/$moduleId',
   getParentRoute: () => LearnRoute,
 } as any)
+const LearnPythonRoute = LearnPythonRouteImport.update({
+  id: '/python',
+  path: '/python',
+  getParentRoute: () => LearnRoute,
+} as any)
+const LearnPythonIndexRoute = LearnPythonIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => LearnPythonRoute,
+} as any)
+const LearnPythonModuleIdRoute = LearnPythonModuleIdRouteImport.update({
+  id: '/$moduleId',
+  path: '/$moduleId',
+  getParentRoute: () => LearnPythonRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -123,7 +141,10 @@ export interface FileRoutesByFullPath {
   '/student': typeof StudentRoute
   '/workspace': typeof WorkspaceRoute
   '/learn/$moduleId': typeof LearnModuleIdRoute
+  '/learn/python': typeof LearnPythonRouteWithChildren
   '/learn/': typeof LearnIndexRoute
+  '/learn/python/$moduleId': typeof LearnPythonModuleIdRoute
+  '/learn/python/': typeof LearnPythonIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -141,6 +162,8 @@ export interface FileRoutesByTo {
   '/workspace': typeof WorkspaceRoute
   '/learn/$moduleId': typeof LearnModuleIdRoute
   '/learn': typeof LearnIndexRoute
+  '/learn/python/$moduleId': typeof LearnPythonModuleIdRoute
+  '/learn/python': typeof LearnPythonIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -159,7 +182,10 @@ export interface FileRoutesById {
   '/student': typeof StudentRoute
   '/workspace': typeof WorkspaceRoute
   '/learn/$moduleId': typeof LearnModuleIdRoute
+  '/learn/python': typeof LearnPythonRouteWithChildren
   '/learn/': typeof LearnIndexRoute
+  '/learn/python/$moduleId': typeof LearnPythonModuleIdRoute
+  '/learn/python/': typeof LearnPythonIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -179,7 +205,10 @@ export interface FileRouteTypes {
     | '/student'
     | '/workspace'
     | '/learn/$moduleId'
+    | '/learn/python'
     | '/learn/'
+    | '/learn/python/$moduleId'
+    | '/learn/python/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -197,6 +226,8 @@ export interface FileRouteTypes {
     | '/workspace'
     | '/learn/$moduleId'
     | '/learn'
+    | '/learn/python/$moduleId'
+    | '/learn/python'
   id:
     | '__root__'
     | '/'
@@ -214,7 +245,10 @@ export interface FileRouteTypes {
     | '/student'
     | '/workspace'
     | '/learn/$moduleId'
+    | '/learn/python'
     | '/learn/'
+    | '/learn/python/$moduleId'
+    | '/learn/python/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -348,16 +382,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LearnModuleIdRouteImport
       parentRoute: typeof LearnRoute
     }
+    '/learn/python': {
+      id: '/learn/python'
+      path: '/python'
+      fullPath: '/learn/python'
+      preLoaderRoute: typeof LearnPythonRouteImport
+      parentRoute: typeof LearnRoute
+    }
+    '/learn/python/': {
+      id: '/learn/python/'
+      path: '/'
+      fullPath: '/learn/python/'
+      preLoaderRoute: typeof LearnPythonIndexRouteImport
+      parentRoute: typeof LearnPythonRoute
+    }
+    '/learn/python/$moduleId': {
+      id: '/learn/python/$moduleId'
+      path: '/$moduleId'
+      fullPath: '/learn/python/$moduleId'
+      preLoaderRoute: typeof LearnPythonModuleIdRouteImport
+      parentRoute: typeof LearnPythonRoute
+    }
   }
 }
 
+interface LearnPythonRouteChildren {
+  LearnPythonModuleIdRoute: typeof LearnPythonModuleIdRoute
+  LearnPythonIndexRoute: typeof LearnPythonIndexRoute
+}
+
+const LearnPythonRouteChildren: LearnPythonRouteChildren = {
+  LearnPythonModuleIdRoute: LearnPythonModuleIdRoute,
+  LearnPythonIndexRoute: LearnPythonIndexRoute,
+}
+
+const LearnPythonRouteWithChildren = LearnPythonRoute._addFileChildren(
+  LearnPythonRouteChildren,
+)
+
 interface LearnRouteChildren {
   LearnModuleIdRoute: typeof LearnModuleIdRoute
+  LearnPythonRoute: typeof LearnPythonRouteWithChildren
   LearnIndexRoute: typeof LearnIndexRoute
 }
 
 const LearnRouteChildren: LearnRouteChildren = {
   LearnModuleIdRoute: LearnModuleIdRoute,
+  LearnPythonRoute: LearnPythonRouteWithChildren,
   LearnIndexRoute: LearnIndexRoute,
 }
 

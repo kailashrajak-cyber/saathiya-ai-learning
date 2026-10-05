@@ -84,7 +84,6 @@ function PyLessonPage() {
 
   const score = m.quiz.filter((q, i) => answers[i] === q.answer).length;
   const quizDone = !!p.modules[m.id]?.quizAt;
-  const stepIdx = done ? 4 : submitted || quizDone ? 4 : 0;
 
   return (
     <article className="mx-auto max-w-3xl space-y-5">
@@ -98,7 +97,7 @@ function PyLessonPage() {
         <h1 className="text-2xl font-semibold sm:text-3xl">{m.title}</h1>
         <ol className="flex flex-wrap gap-1.5 text-[11px]" aria-label="Lesson flow">
           {STEPS.map((s, i) => (
-            <li key={s} className={cn("rounded-full border px-2.5 py-1", i <= stepIdx && (done || i === 0 || i === stepIdx) ? "border-primary/50 bg-primary/10 text-primary" : "border-border text-muted-foreground")}>
+            <li key={s} className={cn("rounded-full border px-2.5 py-1", i < 3 || (i === 3 && (quizDone || submitted)) || (i === 4 && done) ? "border-primary/50 bg-primary/10 text-primary" : "border-border text-muted-foreground")}>
               {i + 1}. {s}
             </li>
           ))}

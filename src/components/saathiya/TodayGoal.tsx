@@ -5,12 +5,13 @@ import { GlassCard } from "./ui";
 
 export function TodayGoal() {
   const p = useLearningProgress();
-  const next = p.next;
+  const py = !p.next && p.pyUnlocked && p.pyNext ? p.pyNext : null;
+  const next = p.next ?? (py ? { id: py.id, title: py.title, practice: py.exercise.task } : null);
   const message = !p.hasActivity
     ? "Every expert started with lesson one. Ten focused minutes today is a great start."
     : p.activeToday
       ? "You showed up today — that's how real skills are built. Shabaash!"
-      : p.courseComplete
+      : p.courseComplete && !py
         ? "Course complete! Revise one module today to keep it fresh."
         : "Small steps every day beat long sessions once a month. Keep going.";
 
@@ -40,7 +41,7 @@ export function TodayGoal() {
       </ul>
       <p className="text-sm text-muted-foreground">{message}</p>
       <Link
-        to={next ? "/learn/$moduleId" : "/learn"} params={(next ? { moduleId: next.id } : {}) as { moduleId: string }}
+        to={py ? "/learn/python/$moduleId" : next ? "/learn/$moduleId" : "/learn"} params={(next ? { moduleId: next.id } : {}) as { moduleId: string }}
         className="inline-flex min-h-11 items-center rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground"
       >
         {p.hasActivity ? "Continue learning" : "Start lesson 1"}

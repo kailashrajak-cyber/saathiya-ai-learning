@@ -295,7 +295,7 @@ export const MODULES: Module[] = [
 export const ROADMAP = [
   { id: "beginner", title: "AI Beginner", text: "Start your journey — curiosity is enough.", course: false },
   { id: "fundamentals", title: "AI Fundamentals", text: "Complete the 10-module fundamentals course.", course: true },
-  { id: "python", title: "Python", text: "Learn the main programming language of AI.", course: false },
+  { id: "python", title: "Python", text: "Python Fundamentals — 10 modules and a study tracker project.", course: true },
   { id: "ml", title: "Machine Learning", text: "Train and evaluate your own models.", course: false },
   { id: "dl", title: "Deep Learning", text: "Build neural networks for images and text.", course: false },
   { id: "genai", title: "Generative AI", text: "Work with models that create content.", course: false },

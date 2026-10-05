@@ -3,6 +3,7 @@ import { CheckCircle2, Circle, Clock } from "lucide-react";
 import { PageHeader, GlassCard } from "@/components/saathiya/ui";
 import { TodayGoal } from "@/components/saathiya/TodayGoal";
 import { COURSE, MODULES } from "@/lib/learn/course";
+import { PY_COURSE, PY_MODULES } from "@/lib/learn/python";
 import { useLearningProgress } from "@/hooks/useLearningProgress";
 
 export const Route = createFileRoute("/learn/")({
@@ -63,7 +64,16 @@ function LearnPage() {
             );
           })}
         </ol>
-        <aside><TodayGoal /></aside>
+        <aside className="space-y-4">
+          <TodayGoal />
+          <Link to="/learn/python">
+            <GlassCard interactive className="space-y-1 p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">Next track</p>
+              <p className="font-semibold">{PY_COURSE.title}</p>
+              <p className="text-xs text-muted-foreground">{p.pyUnlocked ? `${p.pyLessonsDone} / ${PY_MODULES.length} lessons · ${p.pyPercent}%` : "Unlocks after you finish AI Fundamentals"}</p>
+            </GlassCard>
+          </Link>
+        </aside>
       </div>
     </div>
   );
