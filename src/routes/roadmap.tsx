@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { CheckCircle2, Lock, PlayCircle } from "lucide-react";
 import { PageHeader } from "@/components/saathiya/ui";
 import { ROADMAP, MODULES } from "@/lib/learn/course";
+import { PY_MODULES } from "@/lib/learn/python";
 import { useLearningProgress } from "@/hooks/useLearningProgress";
 import { cn } from "@/lib/utils";
 
@@ -31,8 +32,10 @@ function RoadmapPage() {
       <ol className="relative space-y-3 border-l border-border pl-6">
         {ROADMAP.map((s, i) => {
           const fundamentals = s.id === "fundamentals";
-          const done = s.id === "beginner" ? p.hasActivity : fundamentals ? p.courseComplete : false;
-          const current = !done && i === (p.hasActivity ? 1 : 0);
+          const python = s.id === "python";
+          const done = s.id === "beginner" ? p.hasActivity : fundamentals ? p.courseComplete : python ? p.pyCourseComplete : false;
+          const currentIdx = !p.hasActivity ? 0 : !p.courseComplete ? 1 : 2;
+          const current = !done && i === currentIdx;
           const locked = !done && !current;
           const Icon = done ? CheckCircle2 : current ? PlayCircle : Lock;
           return (
@@ -49,7 +52,7 @@ function RoadmapPage() {
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <p className="font-semibold">{i + 1}. {s.title}</p>
                   <span className="text-xs text-muted-foreground">
-                    {done ? "Completed" : current ? "Current stage" : s.course ? "Available" : "Coming soon"}
+                    {done ? "Completed" : current ? "Current stage" : python ? "Unlocks after AI Fundamentals" : "Coming soon"}
                   </span>
                 </div>
                 <p className="mt-1 text-sm text-muted-foreground">{s.text}</p>
@@ -61,6 +64,16 @@ function RoadmapPage() {
                     <p className="text-xs text-muted-foreground">{p.lessonsDone} / {MODULES.length} modules</p>
                     <Link to="/learn" className="inline-flex min-h-10 items-center rounded-xl bg-primary px-4 text-xs font-semibold text-primary-foreground">
                       {p.hasActivity ? "Continue course" : "Start course"}
+                    </Link>
+                  </div>
+                ) : python && p.pyUnlocked ? (
+                  <div className="mt-3 space-y-2">
+                    <div className="h-2 overflow-hidden rounded-full bg-secondary">
+                      <div className="h-full bg-primary" style={{ width: `${p.pyPercent}%` }} />
+                    </div>
+                    <p className="text-xs text-muted-foreground">{p.pyLessonsDone} / {PY_MODULES.length} modules</p>
+                    <Link to="/learn/python" className="inline-flex min-h-10 items-center rounded-xl bg-primary px-4 text-xs font-semibold text-primary-foreground">
+                      {p.pyLessonsDone ? "Continue Python" : "Start Python"}
                     </Link>
                   </div>
                 ) : s.id === "beginner" && !done ? (

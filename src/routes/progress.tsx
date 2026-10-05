@@ -3,6 +3,7 @@ import { GraduationCap } from "lucide-react";
 import { EmptyState, GlassCard, GhostButton, PageHeader } from "@/components/saathiya/ui";
 import { TodayGoal } from "@/components/saathiya/TodayGoal";
 import { MODULES, ROADMAP } from "@/lib/learn/course";
+import { PY_MODULES } from "@/lib/learn/python";
 import { useLearningProgress } from "@/hooks/useLearningProgress";
 import { usePracticeProgress } from "@/hooks/usePracticeProgress";
 import { CATEGORIES } from "@/lib/practice/content";
@@ -80,6 +81,28 @@ function ProgressPage() {
             ) : (
               <p className="text-sm font-semibold text-primary">Course complete — well done!</p>
             )}
+          </GlassCard>
+          <GlassCard className="space-y-3">
+            <div className="flex justify-between text-sm">
+              <span className="font-semibold">Python Fundamentals</span>
+              <span className="text-primary">{p.pyPercent}%</span>
+            </div>
+            <div className="h-2.5 overflow-hidden rounded-full bg-secondary">
+              <div className="h-full bg-primary" style={{ width: `${p.pyPercent}%` }} />
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Current Python stage: <span className="font-semibold text-foreground">{p.pyStage}</span>
+            </p>
+            <div className="grid grid-cols-3 gap-2 text-center text-xs">
+              <div><p className="font-display text-lg font-bold">{p.pyLessonsDone}/{PY_MODULES.length}</p><p className="text-muted-foreground">Lessons</p></div>
+              <div><p className="font-display text-lg font-bold">{p.pyQuizzesDone}/{PY_MODULES.length}</p><p className="text-muted-foreground">Quizzes</p></div>
+              <div><p className="font-display text-lg font-bold">{p.pyProjectDone}/1</p><p className="text-muted-foreground">Project</p></div>
+            </div>
+            {p.pyUnlocked && p.pyNext ? (
+              <Link to="/learn/python/$moduleId" params={{ moduleId: p.pyNext.id }} className="inline-flex min-h-11 items-center rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground">
+                Continue: {p.pyNext.title}
+              </Link>
+            ) : p.pyCourseComplete ? <p className="text-sm font-semibold text-primary">Python course complete — well done!</p> : null}
           </GlassCard>
           <div className="grid grid-cols-2 gap-3">
             {stats.map((s) => (

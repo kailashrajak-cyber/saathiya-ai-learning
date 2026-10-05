@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { MODULES } from "@/lib/learn/course";
+import { PY_MODULES, PY_PROJECT_ID } from "@/lib/learn/python";
 
 type Entry = { lessonAt?: string; quizScore?: number; quizTotal?: number; quizAt?: string };
 type State = { modules: Record<string, Entry>; days: string[] };
@@ -78,7 +79,34 @@ export function useLearningProgress() {
   const stageIndex = lessonsDone === 0 ? 0 : 1;
   const courseComplete = lessonsDone === MODULES.length;
 
+  // Python Fundamentals track (unlocks after AI Fundamentals).
+  const py = state.modules;
+  const pyLessonsDone = PY_MODULES.filter((m) => py[m.id]?.lessonAt).length;
+  const pyQuizzesDone = PY_MODULES.filter((m) => py[m.id]?.quizAt).length;
+  const pyProjectDone = py[PY_PROJECT_ID]?.lessonAt ? 1 : 0;
+  const pyNext = PY_MODULES.find((m) => !py[m.id]?.lessonAt) ?? null;
+  const pyPercent = Math.round((pyLessonsDone / PY_MODULES.length) * 100);
+  const pyCourseComplete = pyLessonsDone === PY_MODULES.length;
+  const pyUnlocked = courseComplete;
+  const pyStage = !pyUnlocked
+    ? "Locked — finish AI Fundamentals first"
+    : pyCourseComplete
+      ? "Course complete"
+      : pyLessonsDone === 0
+        ? "Not started"
+        : `Module ${PY_MODULES.indexOf(pyNext!) + 1}: ${pyNext!.title}`;
+  const completePyProject = () => update(PY_PROJECT_ID, { lessonAt: new Date().toISOString() });
+
   return {
+    pyLessonsDone,
+    pyQuizzesDone,
+    pyProjectDone,
+    pyNext,
+    pyPercent,
+    pyCourseComplete,
+    pyUnlocked,
+    pyStage,
+    completePyProject,
     ready,
     modules: state.modules,
     lessonsDone,
